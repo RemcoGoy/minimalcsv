@@ -1,6 +1,5 @@
 import React from "react";
 import DragWindowRegion from "@/components/DragWindowRegion";
-import NavigationMenu from "@/components/NavigationMenu";
 
 export default function BaseLayout({
   children,
@@ -9,8 +8,7 @@ export default function BaseLayout({
 }) {
   return (
     <>
-      <DragWindowRegion title="electron-shadcn" />
-      <NavigationMenu />
+      <DragWindowRegion />
       <hr />
       <main>{children}</main>
     </>
