@@ -20,20 +20,32 @@ export function InlineEditableTable({ data }: { data: any[] }) {
   const [editingCell, setEditingCell] = React.useState<{
     row: number;
     column: number;
+    isHeader?: boolean;
   } | null>(null);
 
-  const handleEdit = (row: number, column: number) => {
-    setEditingCell({ row, column });
+  const handleEdit = (row: number, column: number, isHeader?: boolean) => {
+    setEditingCell({ row, column, isHeader });
   };
 
-  const handleSave = (row: number, column: number, value: string) => {
-    setRows((prevData) =>
-      prevData.map((item: any[], i: number) =>
-        i === row
-          ? item.map((val: any, j: number) => (j === column ? value : val))
-          : item,
-      ),
-    );
+  const handleSave = (
+    row: number,
+    column: number,
+    value: string,
+    isHeader?: boolean,
+  ) => {
+    if (isHeader) {
+      setHeaders((prevHeaders) =>
+        prevHeaders.map((header, j) => (j === column ? value : header)),
+      );
+    } else {
+      setRows((prevData) =>
+        prevData.map((item: any[], i: number) =>
+          i === row
+            ? item.map((val: any, j: number) => (j === column ? value : val))
+            : item,
+        ),
+      );
+    }
     setEditingCell(null);
   };
 
@@ -54,8 +66,19 @@ export function InlineEditableTable({ data }: { data: any[] }) {
       <Table>
         <TableHeader>
           <TableRow>
-            {headers.map((header) => (
-              <TableHead key={header}>{header}</TableHead>
+            {headers.map((header, j) => (
+              <TableHead key={header}>
+                <EditableCell
+                  key={`header-${j}`}
+                  value={header}
+                  isEditing={Boolean(
+                    editingCell?.isHeader && editingCell?.column === j,
+                  )}
+                  onEdit={() => handleEdit(0, j, true)}
+                  onSave={(value) => handleSave(0, j, value, true)}
+                  onCancel={handleCancel}
+                />
+              </TableHead>
             ))}
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -68,7 +91,9 @@ export function InlineEditableTable({ data }: { data: any[] }) {
                   key={`${i}-${header}`}
                   value={row[j]}
                   isEditing={
-                    editingCell?.row === i && editingCell?.column === j
+                    !editingCell?.isHeader &&
+                    editingCell?.row === i &&
+                    editingCell?.column === j
                   }
                   onEdit={() => handleEdit(i, j)}
                   onSave={(value) => handleSave(i, j, value)}
