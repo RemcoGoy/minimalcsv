@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 
 export function InlineEditableTable({ data }: { data: any[] }) {
   const [headers, setHeaders] = React.useState<any[]>(data[0]);
@@ -40,8 +41,16 @@ export function InlineEditableTable({ data }: { data: any[] }) {
     setEditingCell(null);
   };
 
+  const handleDelete = (row: number) => {
+    setRows((prevData) => prevData.filter((_, i) => i !== row));
+  };
+
+  const handleAddRow = () => {
+    setRows((prevData) => [...prevData, Array(headers.length).fill("")]);
+  };
+
   return (
-    <div className="rounded-md border">
+    <div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -67,14 +76,22 @@ export function InlineEditableTable({ data }: { data: any[] }) {
                 />
               ))}
               <TableCell className="text-right">
-                <Button variant="ghost" size="sm">
-                  Delete
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDelete(i)}
+                >
+                  <Trash2Icon className="h-4 w-4" />
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      <Button onClick={handleAddRow} variant="ghost" size="icon">
+        <PlusIcon className="h-4 w-4" />
+      </Button>
     </div>
   );
 }
@@ -132,7 +149,7 @@ function EditableCell({
           onChange={(e) => setEditedValue(e.target.value)}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          className="h-8 w-[180px]"
+          className="h-8"
         />
       </TableCell>
     );
@@ -141,7 +158,7 @@ function EditableCell({
   return (
     <TableCell>
       <div
-        className="-m-1 cursor-text rounded p-1 hover:bg-accent"
+        className="-m-1 h-8 cursor-text rounded p-1 hover:bg-accent"
         onClick={onEdit}
         onFocus={onEdit}
         tabIndex={0}
