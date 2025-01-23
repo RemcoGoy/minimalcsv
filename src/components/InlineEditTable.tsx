@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { Plus, PlusIcon, Trash2Icon } from "lucide-react";
 
 export function InlineEditableTable({ data }: { data: any[] }) {
   const [headers, setHeaders] = React.useState<any[]>(data[0]);
@@ -80,7 +80,9 @@ export function InlineEditableTable({ data }: { data: any[] }) {
                 />
               </TableHead>
             ))}
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right">
+              <PlusIcon className="h-4 w-4" />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
