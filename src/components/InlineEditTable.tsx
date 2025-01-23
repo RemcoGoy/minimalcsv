@@ -61,6 +61,11 @@ export function InlineEditableTable({ data }: { data: any[] }) {
     setRows((prevData) => [...prevData, Array(headers.length).fill("")]);
   };
 
+  const handleAddColumn = () => {
+    setHeaders((prevHeaders) => [...prevHeaders, "new_column"]);
+    setRows((prevData) => prevData.map((row) => [...row, ""]));
+  };
+
   return (
     <div>
       <Table>
@@ -81,7 +86,9 @@ export function InlineEditableTable({ data }: { data: any[] }) {
               </TableHead>
             ))}
             <TableHead className="text-right">
-              <PlusIcon className="h-4 w-4" />
+              <Button onClick={handleAddColumn} variant="ghost" size="icon">
+                <PlusIcon className="h-4 w-4" />
+              </Button>
             </TableHead>
           </TableRow>
         </TableHeader>
