@@ -44,8 +44,8 @@ export default function UploadPage() {
 
   return (
     <>
-      <div className="flex h-auto flex-col items-center justify-center gap-2">
-        <div className="h-full w-11/12">
+      <div className="flex h-full flex-col items-center justify-center gap-2">
+        <div className="w-11/12">
           <FileUploader
             value={files}
             onValueChange={setFiles}

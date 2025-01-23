@@ -154,3 +154,7 @@
     @apply px-4 xl:px-6 2xl:px-4 mx-auto max-w-[1536px];
   }
 }
+
+.mainArea {
+  height: calc(100vh - 28px);
+}

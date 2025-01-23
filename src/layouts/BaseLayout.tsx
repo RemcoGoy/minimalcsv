@@ -7,9 +7,9 @@ export default function BaseLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="flex h-screen w-full flex-col">
       <DragWindowRegion />
-      <main>{children}</main>
-    </>
+      <main className="mainArea">{children}</main>
+    </div>
   );
 }
