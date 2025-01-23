@@ -1,3 +1,4 @@
+import DragWindowRegion from "@/components/DragWindowRegion";
 import React from "react";
 
 export default function BaseLayout({
@@ -7,6 +8,7 @@ export default function BaseLayout({
 }) {
   return (
     <>
+      <DragWindowRegion />
       <main>{children}</main>
     </>
   );

@@ -1,6 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import UploadPage from "../pages/UploadPage";
 import { RootRoute } from "./__root";
+import DataPage from "@/pages/DataPage";
 
 // TODO: Steps to add a new route:
 // 1. Create a new page component in the '../pages/' directory (e.g., NewPage.tsx)
@@ -27,4 +28,10 @@ export const UploadRoute = createRoute({
   component: UploadPage,
 });
 
-export const rootTree = RootRoute.addChildren([UploadRoute]);
+export const DataRoute = createRoute({
+  getParentRoute: () => RootRoute,
+  path: "/data",
+  component: DataPage,
+});
+
+export const rootTree = RootRoute.addChildren([UploadRoute, DataRoute]);

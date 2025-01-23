@@ -1,5 +1,29 @@
-import React from "react";
+import {
+  closeWindow,
+  maximizeWindow,
+  minimizeWindow,
+} from "@/helpers/window_helpers";
+import React, { type ReactNode } from "react";
 
-export default function DragWindowRegion() {
-  return <div className="draglayer w-full"></div>;
+interface DragWindowRegionProps {
+  title?: ReactNode;
+}
+
+export default function DragWindowRegion({ title }: DragWindowRegionProps) {
+  return (
+    <div className="flex w-screen items-stretch justify-between">
+      <div className="draglayer w-full">
+        {title && (
+          <div className="flex flex-1 select-none whitespace-nowrap p-2 text-xs text-gray-400">
+            {title}
+          </div>
+        )}
+      </div>
+      <WindowButtons />
+    </div>
+  );
+}
+
+function WindowButtons() {
+  return <div className="flex h-7"></div>;
 }
