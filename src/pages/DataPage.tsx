@@ -1,6 +1,6 @@
 import React from "react";
 import { useDataStore } from "@/store/dataStore";
-import { InlineEditableTable } from "@/components/InlineEditTable";
+import { InlineEditableTable } from "@/components/editable-table/InlineEditTable";
 
 export default function DataPage() {
   const { data } = useDataStore();

@@ -9,9 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
+import { EditableCell } from "./EditableCell";
+import { EditableHeader } from "./EditableHeader";
 
 export function InlineEditableTable({ data }: { data: any[] }) {
   const [headers, setHeaders] = React.useState<any[]>(data[0]);
@@ -57,6 +58,13 @@ export function InlineEditableTable({ data }: { data: any[] }) {
     setRows((prevData) => prevData.filter((_, i) => i !== row));
   };
 
+  const handleDeleteColumn = (column: number) => {
+    setHeaders((prevHeaders) => prevHeaders.filter((_, i) => i !== column));
+    setRows((prevData) =>
+      prevData.map((row: any[]) => row.filter((_, i) => i !== column)),
+    );
+  };
+
   const handleAddRow = () => {
     setRows((prevData) => [...prevData, Array(headers.length).fill("")]);
   };
@@ -73,7 +81,7 @@ export function InlineEditableTable({ data }: { data: any[] }) {
           <TableRow>
             {headers.map((header, j) => (
               <TableHead key={header}>
-                <EditableCell
+                <EditableHeader
                   key={`header-${j}`}
                   value={header}
                   isEditing={Boolean(
@@ -82,6 +90,7 @@ export function InlineEditableTable({ data }: { data: any[] }) {
                   onEdit={() => handleEdit(0, j, true)}
                   onSave={(value) => handleSave(0, j, value, true)}
                   onCancel={handleCancel}
+                  onDelete={() => handleDeleteColumn(j)}
                 />
               </TableHead>
             ))}
@@ -127,79 +136,5 @@ export function InlineEditableTable({ data }: { data: any[] }) {
         <PlusIcon className="h-4 w-4" />
       </Button>
     </div>
-  );
-}
-
-interface EditableCellProps {
-  value: string;
-  isEditing: boolean;
-  onEdit: () => void;
-  onSave: (value: string) => void;
-  onCancel: () => void;
-}
-
-function EditableCell({
-  value,
-  isEditing,
-  onEdit,
-  onSave,
-  onCancel,
-}: EditableCellProps) {
-  const [editedValue, setEditedValue] = React.useState(value);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    setEditedValue(value);
-  }, [value]);
-
-  React.useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
-
-  const handleBlur = () => {
-    if (editedValue !== value) {
-      onSave(editedValue);
-    } else {
-      onCancel();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      onSave(editedValue);
-    } else if (e.key === "Escape") {
-      onCancel();
-    }
-  };
-
-  if (isEditing) {
-    return (
-      <TableCell>
-        <Input
-          ref={inputRef}
-          value={editedValue}
-          onChange={(e) => setEditedValue(e.target.value)}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          className="h-8"
-        />
-      </TableCell>
-    );
-  }
-
-  return (
-    <TableCell>
-      <div
-        className="-m-1 h-8 cursor-text rounded p-1 hover:bg-accent"
-        onClick={onEdit}
-        onFocus={onEdit}
-        tabIndex={0}
-        role="button"
-      >
-        {value}
-      </div>
-    </TableCell>
   );
 }
