@@ -84,7 +84,6 @@ export function EditableHeader({
       onClick={onEdit}
       onFocus={onEdit}
       tabIndex={0}
-      role="button"
     >
       {value}
     </div>
